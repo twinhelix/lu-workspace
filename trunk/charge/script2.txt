@@ -1,0 +1,20 @@
+# script2.txt input for change.
+Sleepy Town council decides on 2008-Dec-20  00:00 that the zone border is
+    now 1,1 1,10 10,10 10,1.  
+A bus license  BNDY1 is registered with the council on 2008-Dec-20  00:10:00 at 0,1.
+On 2008-Dec-20  00:10:05 10 passengers board the bus BNDY1.
+A bus license  BNDY2 is registered with the council on 2008-Dec-20  00:20 at 1,0.
+Sleepy Town council  decides  on 2008-Dec-20  09:00 
+that the basic unit charge should be set to 2.50.
+The bus BNDY1 moves to 5,5 on 2008-Dec-20  11:00.
+On 2008-Dec-20  11:05 5 passengers  board the bus BNDY1.
+The bus BNDY1 moves to 0.5,0.5 on 2008-Dec-21  13:00.
+A petrol car  license   SUV3 is  registered with the council 
+on 2008-Dec-21  13:20  at 0,0.
+Sleepy Town council decides on 2008-Dec-21  13:30 that
+  the basic unit charge  should be set to 2.00.
+The petrol car SUV3 moves to 3,4 on 2008-Dec-21  14:00.
+On 2008-Dec-21  14:01 20 passengers board the bus BNDY1. 
+on 2008-Dec-21  14:05 10 passengers board the bus BNDY2.
+The bus BNDY2 moves to 5,5 on 2008-Dec-22  14:15.
+The bus BNDY2 moves to 6,6 on  2008-Dec-22  15:00. 

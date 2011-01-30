@@ -1,0 +1,15 @@
+#!/bin/sh
+# Shell to run the compiler 
+# JARDIR should point to the directory containing the compiler.jar and Compiler.class 
+JARDIR=.
+ANTLRVERSION=3.2
+ANTLRLIB=/vol/lab/lib
+ANTLRJAR=${ANTLRLIB}/antlr-${ANTLRVERSION}.jar
+if [ -f ${JARDIR}/compiler.jar ]
+ then
+#  TESDIRECTORY is where the test directory is
+ java -DTESTDIRECTORY="/vol/lab/secondyear/compilertests" -classpath ${ANTLRJAR}:${JARDIR}/compiler.jar:. -ea Compiler $@
+ else
+   echo "The directory ${JARDIR} should contain compiler.jar"
+   echo "Either move compiler.jar  or change the value of JARDIR in this script"
+fi

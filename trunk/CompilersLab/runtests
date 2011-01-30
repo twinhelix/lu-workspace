@@ -1,0 +1,23 @@
+#!/bin/sh
+#This runs the compiler, if the is no error
+# runs spim on the result file.
+# the current directory has to be writeable
+tests=/vol/lab/secondyear/compilertests
+if [ -z $1 ]
+  then 
+    files="*.c"
+   else
+    files=$1
+fi
+for f in $tests/$files
+ do
+   name=`basename $f .c`
+   echo "compiling $name.c"
+   if compile $f
+    then
+     if [ -s $name.mips ]
+       then
+        spim -file $name.mips
+      fi
+     fi
+   done

@@ -1,0 +1,9 @@
+Todo:
+1. To clarify the section "The problem with mirrored registers": the example shows generated code that is incorrect, because the stopping condition for the while loop (bge $a1, 10, L1) assumes that the value of x is stored in $a1. However, x is actually loaded into $a2 in the loop body. When execution returns to the stopping condition, it tests against the value stored in $a1, whereas the actual value of x is in $a2. This example demonstrates that you must ensure that any registers used to hold values that are tested as part of the stopping condition hold the correct value each time they are tested.
+
+2. if ( 1==2 && 1/0 > 0)
+{ printf("wrong\n"); }
+
+The second argument of and && or || expression should not be evaluated if the result of the first argument (1==2 in this case) makes the result of the whole expression known. Therefore, this example should not stop on a divide by zero error as 1/0 is not executed, and it should not print anything.
+
+If your compiler evaluates constant expressions, then it should use the same semantics for && and || expressions. It should not crash on a divide by zero error in evaluating the above expression.
