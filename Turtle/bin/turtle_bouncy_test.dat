@@ -1,0 +1,44 @@
+paper 20 40
+
+
+
+
+new bouncy bill 0 0
+left bill 45
+move   bill  5
+pen bill down
+move bill  11
+pen   bill  $
+left   bill  90
+move   bill  10
+right   bill  90
+move   bill  10
+right   bill  135
+pen    bill            !
+new bouncy fred 10 10
+left fred 45
+move   fred  5
+pen fred down
+move fred  11
+pen   fred  .
+left   fred  90
+move   bill  15
+pen   bill  up
+move   bill  14
+pen   bill  down
+pen   bill  ?
+move   bill  1
+right   bill  90
+move   bill  9
+move   fred  10
+right   fred  90
+move   fred  10
+right   fred  135
+move   fred  15
+pen   fred  up
+move   fred  14
+pen   fred  down
+move   fred  1
+right   fred  90
+move   fred  9
+show

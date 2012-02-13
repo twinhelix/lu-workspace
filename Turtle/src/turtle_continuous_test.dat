@@ -1,0 +1,19 @@
+paper 10 50
+
+
+
+new continuous fred 5 25
+pen fred ^
+pen fred down
+move fred 8
+right fred 90
+move fred 4
+right fred 90
+move fred 8
+left fred 90
+move fred 300
+left fred 90
+move fred 4
+left fred 90
+move fred 500
+show

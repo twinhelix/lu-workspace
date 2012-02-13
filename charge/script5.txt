@@ -1,0 +1,13 @@
+# script5.txt input for change.
+Sleepy Town council decides on 2007-Dec-20  
+00:00 that the zone border is
+     now 1,1 1,10 10,1 10,10 .
+A bus license  BNDY1 is registered with the council on 2007-Dec-20  00:10 at 0,0 .
+A bus license  BNDY2 is registered with the council on 2007-Dec-20  00:20 at 12,12 .
+30 passengers board the bus BNDY1.
+10 passengers board the bus BNDY2.
+The bus BNDY1 moves to 5,5 on 2007-Dec-22  14:15.
+The bus BNDY2 moves to 6,6 on  2007-Dec-22  15:00.
+
+
+

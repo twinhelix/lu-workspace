@@ -1,0 +1,32 @@
+paper 10 100
+
+
+
+
+new reflecting bill 6 25
+pen bill  R
+new bouncy fred 8 35
+pen bill down
+move   bill  40
+pen fred B
+pen fred down
+right bill 225
+right fred 225
+new wrapping maeve 4 80
+pen maeve W
+pen maeve down
+new continuous lucy 4 60
+right maeve 225
+move   maeve  20
+pen lucy C
+move   fred  20
+pen lucy down
+right lucy 90
+move   lucy  200
+right lucy 90
+move   lucy  200
+right lucy 90
+move   lucy  200
+right lucy 90
+move lucy 200
+show
