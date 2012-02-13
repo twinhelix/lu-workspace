@@ -1,0 +1,33 @@
+# script3.txt input for change.
+Sleepy Town council decides on 2008-Dec-21  00:00 that the zone border is
+    now 1,1 1,10 10,1 10,10.  
+A  lorry license  L10RRY with 12 axles is  registered with the council 
+on 2008-Dec-21  00:10  at 12,12.
+A lorry license  L20RRY with  8 axles is  registered with the council 
+  on 2008-Dec-21  00:20 at 1,0.
+A bus license  BNDY1 is registered with the council on 2008-Dec-21  01:20 at 0,0.
+A petrol car  license   M1LLY is  registered with the council
+  on 2008-Dec-21  01:30 at 0.5,0.5.
+On 2008-Dec-21  01:31 1 passengers board the bus BNDY1.
+The petrol car M1LLY moves to 2,2 on 2008-Dec-21  08:00.
+The   lorry L10RRY moves to 8,11 on 2008-Dec-21  10:00.
+Sleepy Town council  decides  on 2008-Dec-21  11:00 
+ that the basic unit charge should be set to 2.00.
+Sleepy Town council  decides on 2008-Dec-21  11:05 
+  that diesel cars  with emission less than 10 ppcm  pay the reduced rate.
+The  lorry L20RRY moves to 3,3 on 2008-Dec-21  11:10.
+On 2008-Dec-21  11:11 1 passengers leave the bus BNDY1.
+The bus BNDY1 moves to 1,5 on 2008-Dec-21  13:00.
+A diesel car license   V4NLI  with an emission rating of 15 ppcm 
+    is registered with the council on 2008-Dec-21  14:00 at 12,12.
+The diesel car V4NLI moves to 8,8  on 2008-Dec-21  17:00.
+Sleepy Town council decides on 2008-Dec-21  18:00 that 
+   the basic unit charge  should be set to 2.50 
+The diesel car V4NLI moves to 5,5 on 2008-Dec-22  14:00.
+On 2008-Dec-22 14:01 20 passengers board the bus BNDY1. 
+The bus BNDY1 moves to 5,6 on 2008-Dec-22  14:10.
+Sleepy Town council decides on 2008-Dec-23 11:00 that diesel cars with emission less 
+than 20 ppcm pay the reduced rate.
+The diesel car V4NLI moves to 6,5 on 2009-jan-01  10:00.
+The  lorry L20RRY moves to 6,5 on 2009-jan-01  11:00.
+  
