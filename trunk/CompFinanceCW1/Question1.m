@@ -45,7 +45,8 @@ pricesA = getCurve(f, rate, nA, m, lambdas);
 pricesB = getCurve(f, rate, nB, m, lambdas);
 pricesC = getCurve(f, rate, nC, m, lambdas);
 
-tab = [lambdas; pricesA; pricesB; pricesC]
+tab = [lambdas; pricesA; pricesB; pricesC]'
+
 
 plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
 
