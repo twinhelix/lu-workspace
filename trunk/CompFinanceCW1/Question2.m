@@ -1,10 +1,8 @@
-%Question 1 - Price-Yield Curves
+%Question 2 - Portfolio Optimization with a Twist
 %Lu Xin lx108
 
 function [ ] = Question2( )
 clear all; clc; close all;
-
-
 % ---------------------------- SETUP ---------------------------- %
 mu1 = 0.006;
 mu2 = 0.01;
@@ -33,26 +31,26 @@ end
 % ---------------------------------------------------------------- %
 % ------------------------ QUESTION 2.a -------------------------- %
 %{
-Formulate the usual Markowitz model for an investment horizon of one month 
-as well as two related optimization problems to find the portfolios with 
-the highest expected return and the smallest variance, respectively. 
+Formulate the usual Markowitz model for an investment horizon of one month
+as well as two related optimization problems to find the portfolios with
+the highest expected return and the smallest variance, respectively.
 Please state all of these problems mathematically.
 %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+horizon = 1;
+for i = 1:5
+    for j = 1:5
+        if i ~= j
+            %optimize
+            
+        end
+    end
+end
 
 % ---------------------------------------------------------------- %
+end
 
+function [ret] = markowitz()
+
+ret = 0;
 end
