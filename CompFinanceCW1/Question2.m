@@ -53,3 +53,4 @@ function [w1,w2] = lagrange(sigma1, sigma2, corr12)
 w1 = (sigma2^2 - corr12)/(sigma1^2 - 2 * corr12 + sigma2^2);
 w2 = 1 - w1;
 end
+
