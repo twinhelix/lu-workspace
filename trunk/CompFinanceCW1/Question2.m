@@ -21,16 +21,28 @@ e = ones (1,5);
 b = 1;
 
 f = zeros (1,5);
-[weights, pvar] = markowitz(covMatrix, f, e, b)
-rmin = mu * weights
+[weights, pvar] = markowitz(covMatrix, f, e, b);
+rmin = mu * weights;
 
 f = -mu;
 H = zeros(5);
-[weights, ret] = markowitz(H, f, e, b)
-rmax = -ret
+[weights, ret] = markowitz(H, f, e, b);
+rmax = -ret;
 
 % Call part 2b
-optimization(rmin, rmax)
+subplot(2,2,1);
+
+[trueFrontier, trueWeights] = optimization(covMatrix, mu, rmin, rmax);
+title('True Efficient Frontier');
+
+% Call part 2c
+[estiFrontier, estWeights] = randomReturns();
+
+% Part 2d
+actualReturns = estWeights * mu'
+actualVariances = 
+
+subplot(2,2,3);
 
 % ---------------------------------------------------------------- %
 
@@ -49,24 +61,57 @@ optimization(rmin, rmax)
 % ---------------------------------------------------------------- %
 
 % 2.b Plot efficient frontier
-    function [] = optimization(rmin, rmax)
-        effFront = ones(10,2);
-        
+    function [effFrontier, effWeights] = optimization(H, mu, rmin, rmax)
+        effFrontier = ones(10,2);
+        effWeights = ones (10,5);
         f = zeros (1,5);
         A = [mu; ones(1,5)];
         
         for i=0:9
             rp = rmin + i * ((rmax - rmin)/9);
             b = [rp 1];
-           
-            [weights, result]  = markowitz(covMatrix, f, A, b);
-            effFront(i+1,1) = result;
-            effFront(i+1,2) = rp;
+            
+            [weights, result]  = markowitz(H, f, A, b);
+            effFrontier(i+1, :) = [result rp];
+            effWeights(i+1, :) = weights;
         end
-
-       plot(effFront(:,1),effFront(:,2))
+        
+        plot(effFrontier(:,1),effFrontier(:,2))
+        %legend('Bond A', 'Bond B', 'Bond C');
+        xlabel('Variance');
+        ylabel('Expected Return of Portfolio');
+        
+        
     end
 % ---------------------------------------------------------------- %
 
+% 2.c
+    function [estiFrontier, estWeights] = randomReturns()
+        randomReturns = rand(24,5)
+        mu1 = mean(randomReturns)
+        sig = var(randomReturns)
+        covMatrix = cov(randomReturns)
+        
+        % Get min variance portfolio
+        e = ones (1,5);
+        b = 1;
+        
+        f = zeros (1,5);
+        [weights, pvar] = markowitz(covMatrix, f, e, b);
+        rmin = mu1 * weights;
+        
+        % Get max return portfolio
+        f = -mu1;
+        H = zeros(5);
+        [weights, ret] = markowitz(H, f, e, b);
+        rmax = -ret;
+        
+        %
+        subplot(2,2,2)
+        [estiFrontier, estWeights] = optimization(covMatrix, mu1, rmin, rmax)
+        title('Estimated Efficient Frontier');
+        
+    end
+% ---------------------------------------------------------------- %
 
 end
