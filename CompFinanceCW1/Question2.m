@@ -4,53 +4,69 @@
 function [ ] = Question2( )
 clear all; clc; close all;
 % ---------------------------- SETUP ---------------------------- %
+% Monthly Returns:
 mu = [0.006 0.01 0.014 0.018 0.022];
+% Correlation Matrix:
+sig = [0.085 0.08 0.095 0.09 0.1];
 
-sigma = [0.085 0.08 0.095 0.09 0.1];
+corr = ones(5)*0.3 + eye(5)*0.7;
+covMatrix = corr2cov(sig, corr);
 
-corr = zeros(5,5);
-for i = 1:5
-    for j = 1:5
-        if i == j
-            corr(i,j) = 1;
-        else
-            corr(i,j) = 0.3;
-        end
-    end
-end
-% Short-Selling allowed
+% Short-Selling not allowed
 % Returns corresponding to different months are mutually independent
 % ---------------------------------------------------------------- %
-% ------------------------ QUESTION 2.a -------------------------- %
-%{
-Formulate the usual Markowitz model for an investment horizon of one month
-as well as two related optimization problems to find the portfolios with
-the highest expected return and the smallest variance, respectively.
-Please state all of these problems mathematically.
-%}
 
-horizon = 1;
-for i = 1:5
-    for j = i:5
-        if i ~= j
-            %optimize
-            [i, j]
-            [ret, sig] = markowitz(mu(i), mu(j), sigma(i), sigma(j), corr(i,j))
-        end
-    end
-end
+% Call part 2a
+e = ones (1,5);
+b = 1;
+
+f = zeros (1,5);
+[weights, pvar] = markowitz(covMatrix, f, e, b)
+rmin = mu * weights
+
+f = -mu;
+H = zeros(5);
+[weights, ret] = markowitz(H, f, e, b)
+rmax = -ret
+
+% Call part 2b
+optimization(rmin, rmax)
 
 % ---------------------------------------------------------------- %
-end
 
-function [ret, sigma] = markowitz(mu1, mu2, sigma1, sigma2, corr12)
-[w1, w2] = lagrange(sigma1, sigma2, corr12)
-ret = w1*mu1 + w2*mu2;
-sigma = sqrt((w1*sigma1)^2 + (w2*sigma2)^2 + 2*w1*w2*corr12);
-end
 
-function [w1,w2] = lagrange(sigma1, sigma2, corr12)
-w1 = (sigma2^2 - corr12)/(sigma1^2 - 2 * corr12 + sigma2^2);
-w2 = 1 - w1;
-end
 
+
+% 2.a: Horizon of 1, markowitz model
+    function [weights, result] = markowitz(H, f, A, b)
+        
+        lb = zeros(1, 5);
+        opts = optimset('Algorithm','active-set','Display','off');
+        
+        [weights,result,exitflag,output,lambda] = ...
+            quadprog(H,f,[],[],A,b,lb,[],[],opts);
+    end
+% ---------------------------------------------------------------- %
+
+% 2.b Plot efficient frontier
+    function [] = optimization(rmin, rmax)
+        effFront = ones(10,2);
+        
+        f = zeros (1,5);
+        A = [mu; ones(1,5)];
+        
+        for i=0:9
+            rp = rmin + i * ((rmax - rmin)/9);
+            b = [rp 1];
+           
+            [weights, result]  = markowitz(covMatrix, f, A, b);
+            effFront(i+1,1) = result;
+            effFront(i+1,2) = rp;
+        end
+
+       plot(effFront(:,1),effFront(:,2))
+    end
+% ---------------------------------------------------------------- %
+
+
+end
