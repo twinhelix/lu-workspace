@@ -36,16 +36,13 @@ subplot(2,2,1);
 title('True Efficient Frontier');
 
 % Call part 2c
-[estiFrontier, estWeights] = randomReturns();
+[estiFrontier, estWeights] = randomReturns(24);
 
 % Part 2d
-actualReturns = estWeights * mu';
-actualVariances = diag(estWeights * covMatrix * estWeights');
-subplot(2,2,3);
-plot(actualVariances, actualReturns);
-xlabel('Variance');
-ylabel('Expected Return of Portfolio');
-title('Actual Efficient Frontier');
+[actualReturns, actualVariances] = actualFrontier(estWeights);
+
+% Part 2e
+averagedFrontier()
 
 % ---------------------------------------------------------------- %
 
@@ -78,7 +75,7 @@ title('Actual Efficient Frontier');
         
         plot(effFrontier(:,1),effFrontier(:,2))
         %legend('Bond A', 'Bond B', 'Bond C');
-        xlabel('Variance');
+        xlabel('Std Dev');
         ylabel('Expected Return of Portfolio');
         
         
@@ -86,11 +83,11 @@ title('Actual Efficient Frontier');
 % ---------------------------------------------------------------- %
 
 % 2.c
-    function [estiFrontier, estWeights] = randomReturns()
-        randomReturns = rand(24,5)
-        mu1 = mean(randomReturns)
-        sig = var(randomReturns)
-        covMatrix = cov(randomReturns)
+    function [estiFrontier, estWeights] = randomReturns(months)
+        randomReturns = rand(months,5);
+        mu1 = mean(randomReturns);
+        sig = var(randomReturns);
+        covMatrix = cov(randomReturns);
         
         % Get min variance portfolio
         e = ones (1,5);
@@ -107,11 +104,45 @@ title('Actual Efficient Frontier');
         rmax = -ret;
         
         %
-        subplot(2,2,2)
-        [estiFrontier, estWeights] = optimization(covMatrix, mu1, rmin, rmax)
+        subplot(2,2,2);
+        [estiFrontier, estWeights] = optimization(covMatrix, mu1, rmin, rmax);
         title('Estimated Efficient Frontier');
         
     end
+% ---------------------------------------------------------------- %
+% 2d
+    function [actualReturns, actualVariances] = actualFrontier(estWeights)
+        actualReturns = estWeights * mu';
+        actualVariances = sqrt(diag(estWeights * covMatrix * estWeights'));
+        subplot(2,2,3);
+        plot(actualVariances, actualReturns);
+        xlabel('Std Dev');
+        ylabel('Expected Return of Portfolio');
+        title('Actual Efficient Frontier');
+    end
+% ---------------------------------------------------------------- %
+    function [] = averagedFrontier()
+        sumExpectedFrontiers = zeros (10,2);
+        sumActualFrontiers = zeros (10,2);
+        % averagedFrontier
+        for j = 1:100
+            [estiFrontier, estWeights] = randomReturns(24);
+            sumExpectedFrontiers = sumExpectedFrontiers + estiFrontier;
+            [actualReturns, actualVariances] = actualFrontier(estWeights);
+            sumActualFrontiers = sumActualFrontiers + [actualReturns, actualVariances];
+        end
+        
+        aveExpectedFrontier = sumExpectedFrontiers/100
+        aveActualFrontier = sumActualFrontiers/100
+        
+        
+        subplot (2,2,4);
+        plot(aveActualFrontier(:,2), aveActualFrontier(:,1), aveExpectedFrontier(:,2),aveExpectedFrontier(:,1));
+        xlabel('Std Dev');
+        ylabel('Expected Return of Portfolio');
+        title('Actual Efficient Frontier');
+    end
+
 % ---------------------------------------------------------------- %
 
 end
