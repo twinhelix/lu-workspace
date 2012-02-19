@@ -2,7 +2,8 @@
 %Lu Xin lx108
 
 function [ ] = Question2( )
-clear all; clc; close all;
+
+clear all; clc; close all; warning('off');
 % ---------------------------- SETUP ---------------------------- %
 % Monthly Returns:
 mu = [0.006 0.01 0.014 0.018 0.022];
@@ -15,134 +16,134 @@ covMatrix = corr2cov(sig, corr);
 % Short-Selling not allowed
 % Returns corresponding to different months are mutually independent
 % ---------------------------------------------------------------- %
-
 % Call part 2a
+% Get min variance
+e = ones (1,5);
+b = 1;
+f = zeros (1,5);
+[minVarWeights, pvar] = markowitz(covMatrix, f, e, b);
+rmin = mu * minVarWeights;
+
+% Get max return
+f = -mu;
+H = zeros(5);
+[maxRetWeights, ret] = markowitz(H, f, e, b);
+rmax = -ret;
+% ---------------------------------------------------------------- %
+% Call part 2b
+[trueFrontier, trueWeights] = optimization(covMatrix, mu, rmin, rmax);
+
+subplot(2,2,1);
+plot(trueFrontier(:,1),trueFrontier(:,2))
+xlabel('Std Dev');
+ylabel('Expected Return');
+title('True Efficient Frontier');
+% ---------------------------------------------------------------- %
+% Call part 2c
+[estFrontier, estWeights] = randomReturns(mu, covMatrix, 1800);
+subplot(2,2,2);
+plot(estFrontier(:,1),estFrontier(:,2))
+xlabel('Std Dev');
+ylabel('Expected Return');
+title('Estimated Efficient Frontier');
+% ---------------------------------------------------------------- %
+% Part 2d
+[actualStdDev, actualReturns] = actualFrontier(estWeights, mu, covMatrix);
+subplot(2,2,3);
+plot(actualStdDev, actualReturns);
+xlabel('Std Dev');
+ylabel('Expected Return');
+title('Actual Efficient Frontier');
+
+% ---------------------------------------------------------------- %
+% Part 2e
+[aveExpectedFrontier, aveActualFrontier] = averagedFrontier(mu, covMatrix, 1800)
+% ---------------------------------------------------------------- %
+end
+
+% ---------------------------------------------------------------- %
+% 2.a: Horizon of 1, markowitz model
+function [weights, result] = markowitz(H, f, A, b)
+
+lb = zeros(1, 5);
+opts = optimset('Algorithm','active-set','Display','off');
+
+[weights,result,exitflag,output,lambda] = ...
+    quadprog(H,f,[],[],A,b,lb,[],[],opts);
+end
+% ---------------------------------------------------------------- %
+
+% 2.b Plot efficient frontier
+function [effFrontier, effWeights] = optimization(H, mu, rmin, rmax)
+effFrontier = ones(10,2);
+effWeights = ones (10,5);
+f = zeros (1,5);
+A = [mu; ones(1,5)];
+
+for i=0:9
+    rp = rmin + i * ((rmax - rmin)/9);
+    b = [rp 1];
+    [weights, result]  = markowitz(H, f, A, b);
+    effFrontier(i+1, :) = [result rp];
+    effWeights(i+1, :) = weights;
+end
+end
+% ---------------------------------------------------------------- %
+% 2.c Random 
+function [estiFrontier, estWeights] = randomReturns(mu, covMatrix, months)
+randomReturns = mvnrnd(mu, covMatrix, months);
+estMu = mean(randomReturns);
+% sig = var(randomReturns);
+covMatrix = cov(randomReturns);
+
+% Get min variance portfolio
 e = ones (1,5);
 b = 1;
 
 f = zeros (1,5);
 [weights, pvar] = markowitz(covMatrix, f, e, b);
-rmin = mu * weights;
+rmin = estMu * weights;
 
-f = -mu;
+% Get max return portfolio
+f = -estMu;
 H = zeros(5);
 [weights, ret] = markowitz(H, f, e, b);
 rmax = -ret;
 
-% Call part 2b
-subplot(2,2,1);
-
-[trueFrontier, trueWeights] = optimization(covMatrix, mu, rmin, rmax);
-title('True Efficient Frontier');
-
-% Call part 2c
-[estiFrontier, estWeights] = randomReturns(24);
-
-% Part 2d
-[actualReturns, actualVariances] = actualFrontier(estWeights);
-
-% Part 2e
-averagedFrontier()
-
+% Get Frontier and Weights
+[estiFrontier, estWeights] = optimization(covMatrix, estMu, rmin, rmax);
+end
 % ---------------------------------------------------------------- %
+% 2d - Actual
+function [actualStdDev, actualReturns] = ...
+    actualFrontier(estWeights, mu, covMatrix)
+actualReturns = estWeights * mu';
+actualStdDev = (diag(estWeights * covMatrix * estWeights'));
+end
+% ---------------------------------------------------------------- %
+function [aveExpectedFrontier, aveActualFrontier] = averagedFrontier(mu, covMatrix, months)
+runs = 10000;
+sumExpectedFrontiers = zeros (10,2);
+sumActualFrontiers = zeros (10,2);
+% averagedFrontier
+for j = 1:runs
+    j
+    [estFrontier, estWeights] = randomReturns(mu, covMatrix, months);
+    sumExpectedFrontiers = sumExpectedFrontiers + estFrontier;
+    
+    [actualStdDev, actualReturns] = actualFrontier(estWeights, mu, covMatrix);
+    sumActualFrontiers = sumActualFrontiers + [actualStdDev, actualReturns];
+end
 
-% 2.a: Horizon of 1, markowitz model
-    function [weights, result] = markowitz(H, f, A, b)
-        
-        lb = zeros(1, 5);
-        opts = optimset('Algorithm','active-set','Display','off');
-        
-        [weights,result,exitflag,output,lambda] = ...
-            quadprog(H,f,[],[],A,b,lb,[],[],opts);
-    end
-% ---------------------------------------------------------------- %
+aveExpectedFrontier = sumExpectedFrontiers/runs;
+aveActualFrontier = sumActualFrontiers/runs;
 
-% 2.b Plot efficient frontier
-    function [effFrontier, effWeights] = optimization(H, mu, rmin, rmax)
-        effFrontier = ones(10,2);
-        effWeights = ones (10,5);
-        f = zeros (1,5);
-        A = [mu; ones(1,5)];
-        
-        for i=0:9
-            rp = rmin + i * ((rmax - rmin)/9);
-            b = [rp 1];
-            
-            [weights, result]  = markowitz(H, f, A, b);
-            effFrontier(i+1, :) = [result rp];
-            effWeights(i+1, :) = weights;
-        end
-        
-        plot(effFrontier(:,1),effFrontier(:,2))
-        %legend('Bond A', 'Bond B', 'Bond C');
-        xlabel('Std Dev');
-        ylabel('Expected Return of Portfolio');
-        
-        
-    end
-% ---------------------------------------------------------------- %
-
-% 2.c
-    function [estiFrontier, estWeights] = randomReturns(months)
-        randomReturns = rand(months,5);
-        mu1 = mean(randomReturns);
-        sig = var(randomReturns);
-        covMatrix = cov(randomReturns);
-        
-        % Get min variance portfolio
-        e = ones (1,5);
-        b = 1;
-        
-        f = zeros (1,5);
-        [weights, pvar] = markowitz(covMatrix, f, e, b);
-        rmin = mu1 * weights;
-        
-        % Get max return portfolio
-        f = -mu1;
-        H = zeros(5);
-        [weights, ret] = markowitz(H, f, e, b);
-        rmax = -ret;
-        
-        %
-        subplot(2,2,2);
-        [estiFrontier, estWeights] = optimization(covMatrix, mu1, rmin, rmax);
-        title('Estimated Efficient Frontier');
-        
-    end
-% ---------------------------------------------------------------- %
-% 2d
-    function [actualReturns, actualVariances] = actualFrontier(estWeights)
-        actualReturns = estWeights * mu';
-        actualVariances = sqrt(diag(estWeights * covMatrix * estWeights'));
-        subplot(2,2,3);
-        plot(actualVariances, actualReturns);
-        xlabel('Std Dev');
-        ylabel('Expected Return of Portfolio');
-        title('Actual Efficient Frontier');
-    end
-% ---------------------------------------------------------------- %
-    function [] = averagedFrontier()
-        sumExpectedFrontiers = zeros (10,2);
-        sumActualFrontiers = zeros (10,2);
-        % averagedFrontier
-        for j = 1:100
-            [estiFrontier, estWeights] = randomReturns(24);
-            sumExpectedFrontiers = sumExpectedFrontiers + estiFrontier;
-            [actualReturns, actualVariances] = actualFrontier(estWeights);
-            sumActualFrontiers = sumActualFrontiers + [actualReturns, actualVariances];
-        end
-        
-        aveExpectedFrontier = sumExpectedFrontiers/100
-        aveActualFrontier = sumActualFrontiers/100
-        
-        
-        subplot (2,2,4);
-        plot(aveActualFrontier(:,2), aveActualFrontier(:,1), aveExpectedFrontier(:,2),aveExpectedFrontier(:,1));
-        xlabel('Std Dev');
-        ylabel('Expected Return of Portfolio');
-        title('Actual Efficient Frontier');
-    end
-
-% ---------------------------------------------------------------- %
+subplot (2,2,4);
+plot(aveActualFrontier(:,1), aveActualFrontier(:,2),...
+    aveExpectedFrontier(:,1),aveExpectedFrontier(:,2));
+xlabel('Std Dev');
+ylabel('Expected Return of Portfolio');
+title('Expected vs Actual Efficient Frontier');
 
 end
+
