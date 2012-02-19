@@ -39,15 +39,15 @@ title('True Efficient Frontier');
 [estiFrontier, estWeights] = randomReturns();
 
 % Part 2d
-actualReturns = estWeights * mu'
-actualVariances = 
-
+actualReturns = estWeights * mu';
+actualVariances = diag(estWeights * covMatrix * estWeights');
 subplot(2,2,3);
+plot(actualVariances, actualReturns);
+xlabel('Variance');
+ylabel('Expected Return of Portfolio');
+title('Actual Efficient Frontier');
 
 % ---------------------------------------------------------------- %
-
-
-
 
 % 2.a: Horizon of 1, markowitz model
     function [weights, result] = markowitz(H, f, A, b)
