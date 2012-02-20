@@ -57,7 +57,7 @@ title('Actual Efficient Frontier');
 
 % ---------------------------------------------------------------- %
 % Part 2e
-[aveExpectedFrontier, aveActualFrontier] = averagedFrontier(mu, covMatrix, 1800)
+[aveExpectedFrontier, aveActualFrontier] = averagedFrontier(mu, covMatrix, 360);
 % ---------------------------------------------------------------- %
 end
 
@@ -122,7 +122,7 @@ actualStdDev = (diag(estWeights * covMatrix * estWeights'));
 end
 % ---------------------------------------------------------------- %
 function [aveExpectedFrontier, aveActualFrontier] = averagedFrontier(mu, covMatrix, months)
-runs = 10000;
+runs = 1000;
 sumExpectedFrontiers = zeros (10,2);
 sumActualFrontiers = zeros (10,2);
 % averagedFrontier
