@@ -51,7 +51,7 @@ tab = [lambdas; pricesA; pricesB; pricesC]'
 plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
 
 
-%legend('Bond A', 'Bond B', 'Bond C');
+legend('Bond A', 'Bond B', 'Bond C');
 %xlabel('Std Dev');
 %ylabel('Expected Return of Portfolio');
 %title('True Efficient Frontier');

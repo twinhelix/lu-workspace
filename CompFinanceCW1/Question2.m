@@ -21,7 +21,7 @@ covMatrix = corr2cov(sig, corr);
 e = ones (1,5);
 b = 1;
 f = zeros (1,5);
-[minVarWeights, pvar] = markowitz(covMatrix, f, e, b);
+[minVarWeights, pstdev] = markowitz(covMatrix, f, e, b);
 rmin = mu * minVarWeights;
 
 % Get max return
@@ -29,6 +29,7 @@ f = -mu;
 H = zeros(5);
 [maxRetWeights, ret] = markowitz(H, f, e, b);
 rmax = -ret;
+
 % ---------------------------------------------------------------- %
 % Call part 2b
 [trueFrontier, trueWeights] = optimization(covMatrix, mu, rmin, rmax);
@@ -57,7 +58,8 @@ title('Actual Efficient Frontier');
 
 % ---------------------------------------------------------------- %
 % Part 2e
-[aveExpectedFrontier, aveActualFrontier] = averagedFrontier(mu, covMatrix, 360);
+[aveExpectedFrontier, aveActualFrontier] = averagedFrontier(trueFrontier, ...
+    mu, covMatrix, 360, 100);
 % ---------------------------------------------------------------- %
 end
 
@@ -84,6 +86,7 @@ for i=0:9
     rp = rmin + i * ((rmax - rmin)/9);
     b = [rp 1];
     [weights, result]  = markowitz(H, f, A, b);
+    result  = sqrt(result * 2);
     effFrontier(i+1, :) = [result rp];
     effWeights(i+1, :) = weights;
 end
@@ -118,11 +121,10 @@ end
 function [actualStdDev, actualReturns] = ...
     actualFrontier(estWeights, mu, covMatrix)
 actualReturns = estWeights * mu';
-actualStdDev = (diag(estWeights * covMatrix * estWeights'));
+actualStdDev = sqrt(diag(estWeights * covMatrix * estWeights'));
 end
 % ---------------------------------------------------------------- %
-function [aveExpectedFrontier, aveActualFrontier] = averagedFrontier(mu, covMatrix, months)
-runs = 1000;
+function [aveExpectedFrontier, aveActualFrontier] = averagedFrontier(trueFrontier, mu, covMatrix, months, runs)
 sumExpectedFrontiers = zeros (10,2);
 sumActualFrontiers = zeros (10,2);
 % averagedFrontier
@@ -140,7 +142,8 @@ aveActualFrontier = sumActualFrontiers/runs;
 
 subplot (2,2,4);
 plot(aveActualFrontier(:,1), aveActualFrontier(:,2),...
-    aveExpectedFrontier(:,1),aveExpectedFrontier(:,2));
+    aveExpectedFrontier(:,1),aveExpectedFrontier(:,2),...
+    trueFrontier(:,1), trueFrontier(:,2));
 xlabel('Std Dev');
 ylabel('Expected Return of Portfolio');
 title('Expected vs Actual Efficient Frontier');
