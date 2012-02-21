@@ -34,24 +34,24 @@ rmax = -ret;
 % Call part 2b
 [trueFrontier, trueWeights] = optimization(covMatrix, mu, rmin, rmax);
 
-subplot(2,2,1);
-plot(trueFrontier(:,1),trueFrontier(:,2))
+%subplot(2,2,1);
+%plot(trueFrontier(:,1),trueFrontier(:,2))
 xlabel('Std Dev');
 ylabel('Expected Return');
 title('True Efficient Frontier');
 % ---------------------------------------------------------------- %
 % Call part 2c
-[estFrontier, estWeights] = randomReturns(mu, covMatrix, 1800);
-subplot(2,2,2);
-plot(estFrontier(:,1),estFrontier(:,2))
+[estFrontier, estWeights] = randomReturns(mu, covMatrix, 24);
+%subplot(2,2,2);
+%plot(estFrontier(:,1),estFrontier(:,2))
 xlabel('Std Dev');
 ylabel('Expected Return');
 title('Estimated Efficient Frontier');
 % ---------------------------------------------------------------- %
 % Part 2d
 [actualStdDev, actualReturns] = actualFrontier(estWeights, mu, covMatrix);
-subplot(2,2,3);
-plot(actualStdDev, actualReturns);
+%subplot(2,2,3);
+%plot(actualStdDev, actualReturns);
 xlabel('Std Dev');
 ylabel('Expected Return');
 title('Actual Efficient Frontier');
@@ -59,7 +59,7 @@ title('Actual Efficient Frontier');
 % ---------------------------------------------------------------- %
 % Part 2e
 [aveExpectedFrontier, aveActualFrontier] = averagedFrontier(trueFrontier, ...
-    mu, covMatrix, 360, 100);
+    mu, covMatrix, 1800, 10000);
 % ---------------------------------------------------------------- %
 end
 
@@ -140,13 +140,14 @@ end
 aveExpectedFrontier = sumExpectedFrontiers/runs;
 aveActualFrontier = sumActualFrontiers/runs;
 
-subplot (2,2,4);
+%subplot (2,2,4);
 plot(aveActualFrontier(:,1), aveActualFrontier(:,2),...
     aveExpectedFrontier(:,1),aveExpectedFrontier(:,2),...
     trueFrontier(:,1), trueFrontier(:,2));
 xlabel('Std Dev');
 ylabel('Expected Return of Portfolio');
-title('Expected vs Actual Efficient Frontier');
+legend('Actual Frontier','Expected Frontier','True Frontier');
+title('10000 Runs, 1800 Months - Expected vs Actual vs True Efficient Frontier');
 
 end
 
