@@ -16,11 +16,16 @@ years = 10;     % 10 year maturity
 m = 1;      % 1 coupon payment per year
 n = years * m;
 
-%pricesA = getCurve(f, rateA, n, m, lambdas);
-%pricesB = getCurve(f, rateB, n, m, lambdas);
-%pricesC = getCurve(f, rateC, n, m, lambdas);
+pricesA = getCurve(f, rateA, n, m, lambdas);
+pricesB = getCurve(f, rateB, n, m, lambdas);
+pricesC = getCurve(f, rateC, n, m, lambdas);
 
-%plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
+%subplot(1,2,1);
+plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
+legend('Bond A - 6%', 'Bond B - 10%', 'Bond C - 12%');
+xlabel('YTM');
+ylabel('Price');
+title('Price-Yield Curve and Coupon Rates (10 Year)');
 % ---------------------------------------------------------------- %
 
 
@@ -48,13 +53,12 @@ pricesC = getCurve(f, rate, nC, m, lambdas);
 tab = [lambdas; pricesA; pricesB; pricesC]'
 
 
-plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
-
-
-legend('Bond A', 'Bond B', 'Bond C');
-%xlabel('Std Dev');
-%ylabel('Expected Return of Portfolio');
-%title('True Efficient Frontier');
+%subplot(1,2,2);
+%plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
+%legend('Bond A - Sep 2012', 'Bond B - Mar 2013', 'Bond C - Sep 2014');
+%xlabel('YTM');
+%ylabel('Price');
+%title('Price-Yield Curve and Maturity Date (14%)');
 
 % ---------------------------------------------------------------- %
 end
