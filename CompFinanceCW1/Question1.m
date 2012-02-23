@@ -20,7 +20,7 @@ pricesA = getCurve(f, rateA, n, m, lambdas);
 pricesB = getCurve(f, rateB, n, m, lambdas);
 pricesC = getCurve(f, rateC, n, m, lambdas);
 
-%subplot(1,2,1);
+subplot(1,2,1);
 plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
 legend('Bond A - 6%', 'Bond B - 10%', 'Bond C - 12%');
 xlabel('YTM');
@@ -50,15 +50,15 @@ pricesA = getCurve(f, rate, nA, m, lambdas);
 pricesB = getCurve(f, rate, nB, m, lambdas);
 pricesC = getCurve(f, rate, nC, m, lambdas);
 
-tab = [lambdas; pricesA; pricesB; pricesC]'
+tab = [lambdas; pricesA; pricesB; pricesC]
 
 
-%subplot(1,2,2);
-%plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
-%legend('Bond A - Sep 2012', 'Bond B - Mar 2013', 'Bond C - Sep 2014');
-%xlabel('YTM');
-%ylabel('Price');
-%title('Price-Yield Curve and Maturity Date (14%)');
+subplot(1,2,2);
+plot(lambdas, pricesA, lambdas, pricesB, lambdas, pricesC);
+legend('Bond A - Sep 2012', 'Bond B - Mar 2013', 'Bond C - Sep 2014');
+xlabel('YTM');
+ylabel('Price');
+title('Price-Yield Curve and Maturity Date (14%)');
 
 % ---------------------------------------------------------------- %
 end
